@@ -34,12 +34,12 @@ resources = {
 coin = ["Quarters", "Dimes", "Nickles", "Pennies"]
 
 
-def check_enough_resource(resource, required):
-    if resources[resource] < required:
-        print(f"Sorry, there is not enough {resource}")
-        return False
-    else:
-        return True
+def enough_resource(required):
+    for i in required:
+        if required[i] > resources[i]:
+            print(f"Sorry, there is not enough {i}!")
+            return False
+    return True
 
 
 def reduce_resources(resource, amount):
@@ -85,20 +85,20 @@ def process_coins(coffee_type):
 if __name__ == "__main__":
     while True:
         user_input = input("What would you like?\n").lower()
-        match user_input:
-            case "off":
-                break
-            case "report":
-                print(f"Water: {resources['water']}\nMilk: {resources['milk']}\nCoffee: {resources['coffee']}\nMoney: {resources['money']}")
-            case "espresso":
-                if check_enough_resource("water", 50) and check_enough_resource("coffee", 18):
-                    process_coins("espresso")
-            case "latte":
-                if check_enough_resource("water", 200) and check_enough_resource("coffee", 150) and check_enough_resource("milk", 24):
-                    process_coins("latte")
-            case "cappuccino":
-                if check_enough_resource("water", 250) and check_enough_resource("coffee", 100) and check_enough_resource("milk", 24):
-                    process_coins("cappuccino")
+
+        if user_input == "off":
+            break
+        elif user_input == "report":
+            print(
+                f"Water: {resources['water']}\n"
+                f"Milk: {resources['milk']}\n"
+                f"Coffee: {resources['coffee']}\n"
+                f"Money: {resources['money']}"
+            )
+        else:
+            drink = MENU[user_input]
+            if enough_resource(drink["ingredients"]):
+                process_coins(user_input)
 
 
 
